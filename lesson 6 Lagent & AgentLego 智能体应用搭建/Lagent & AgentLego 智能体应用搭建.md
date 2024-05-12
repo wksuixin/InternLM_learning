@@ -61,7 +61,7 @@ lmdeploy serve api_server /root/share/new_models/Shanghai_AI_Laboratory/internlm
                             --model-name internlm2-chat-7b \
                             --cache-max-entry-count 0.1
 ```
-![启动api_server](.\img\启动api_server.png)
+![启动api_server](./img/启动api_server.png)
 
 2. 启动Lagent Demo
 
@@ -70,14 +70,14 @@ conda activate agent
 cd /root/agent/lagent/examples
 streamlit run internlm2_agent_web_demo.py --server.address 127.0.0.1 --server.port 7860
 ```
-![启动Lagent_Demo](.\img\启动Lagent_Demo.png)
+![启动Lagent_Demo](./img/启动Lagent_Demo.png)
 
 3. 建立端口映射
 ```
 ssh -CNg -L 7860:127.0.0.1:7860 -L 23333:127.0.0.1:23333 root@ssh.intern-ai.org.cn -p 你的 ssh 端口号
 ```
 4. 访问 http://localhost:7860
-![访问服务](.\img\访问服务.png)
+![访问服务](./img/访问服务.png)
 
 ### 2.2 用Lagent自定义工具
 1. 创建天气查询代码
@@ -187,9 +187,9 @@ class WeatherQuery(BaseAction):
 
 2. 获取 API KEY
 为了获得稳定的天气查询服务，我们首先要获取 API KEY。首先打开 https://dev.qweather.com/docs/api/ 后，点击右上角控制台。（如下图所示）
-![创建天气项目](.\img\创建天气项目.png)
+![创建天气项目](./img/创建天气项目.png)
 查看天气API的key
-![查看天气api_key](.\img\查看天气api_key.png)
+![查看天气api_key](./img/查看天气api_key.png)
 
 3. 使用自定义工具
 2.1 中的1已经启动API Server。
@@ -201,13 +201,13 @@ conda activate agent
 cd /root/agent/Tutorial/agent
 streamlit run internlm2_weather_web_demo.py --server.address 127.0.0.1 --server.port 7860
 ```
-![启动自定义插件服务](.\img\启动自定义插件服务.png)
+![启动自定义插件服务](./img/启动自定义插件服务.png)
 4. 建立端口映射
 ```
 ssh -CNg -L 7860:127.0.0.1:7860 -L 23333:127.0.0.1:23333 root@ssh.intern-ai.org.cn -p 你的 ssh 端口号
 ```
 5. 访问 http://localhost:7860
-![查阅北京天气](.\img\查阅北京天气.png)
+![查阅北京天气](./img/查阅北京天气.png)
 
 ## 3. 实战AgentLego
 ### 3.1 直接使用检测模型
@@ -220,7 +220,7 @@ pip install openmim==0.3.9
 mim install mmdet==3.3.0
 ```
 在安装完成后，可能会观察到以下现象（如下图所示），但请放心，这是正常现象，这并不会影响到我们的使用。
-![安装错误信息](.\img\安装错误信息.png)
+![安装错误信息](./img/安装错误信息.png)
 然后通过 touch /root/agent/direct_use.py（大小写敏感）的方式在 /root/agent 目录下新建 direct_use.py 以直接使用目标检测工具，direct_use.py 的代码如下：
 ```python
 import re
@@ -250,7 +250,7 @@ for pred in preds:
 cv2.imwrite('/root/agent/road_detection_direct.jpg', image)
 ```
 接下来在执行 python /root/agent/direct_use.py 以进行推理。在等待 RTMDet-Large 权重下载并推理完成后，我们就可以看到如下输出以及一张位于 /root/agent 名为 road_detection_direct.jpg 的图片
-![检测模型直接使用](.\img\检测模型直接使用.png)
+![检测模型直接使用](./img/检测模型直接使用.png)
 
 
 ### 3.2 作为智能体工具使用
@@ -269,7 +269,7 @@ conda activate agent
 cd /root/agent/agentlego/webui
 python one_click.py
 ```
-![启动Web_UI](.\img\启动Web_UI.png)
+![启动Web_UI](./img/启动Web_UI.png)
 
 4. 转发端口
 ```
@@ -286,7 +286,7 @@ ssh -CNg -L 7860:127.0.0.1:7860 -L 23333:127.0.0.1:23333 root@ssh.intern-ai.org.
 * 输入 Agent name，自定义即可，图中输入了 internlm2。（如⑤所示）
 * 点击 save to 以保存配置，这样在下次使用时只需在第2步时选择 Agent 为 internlm2 后点击 load 以加载就可以了。（如⑥所示）
 * 点击 load 以加载配置。（如⑦所示）
-![配置Web_UI](.\img\配置Web_UI.png)
+![配置Web_UI](./img/配置Web_UI.png)
 
 然后配置工具，如下图所示。
 
@@ -294,10 +294,10 @@ ssh -CNg -L 7860:127.0.0.1:7860 -L 23333:127.0.0.1:23333 root@ssh.intern-ai.org.
 * 点击 Tools 下方框，选择 New Tool 以加载新工具。（如②所示）
 * 选择 Tool Class 为 ObjectDetection。（如③所示）
 * 点击 save 以保存配置。（如④所示）
-![配置tools](.\img\配置tools.png)
+![配置tools](./img/配置tools.png)
 
 等待工具加载完成后，点击上方 Chat 以进入对话页面。在页面下方选择工具部分只选择 ObjectDetection 工具，如下图所示。为了确保调用工具的成功率，请在使用时确保仅有这一个工具启用。
-![Lagent检测模型](.\img\Lagent检测模型.png)
+![Lagent检测模型](./img/Lagent检测模型.png)
 
 ## 3.3 用AgentLego自定义工具
 
@@ -410,4 +410,4 @@ __all__ = [
 3. 体验效果
 
 与上节配置类似。
-![动画生成](.\img\动画生成.png)
+![动画生成](./img/动画生成.png)

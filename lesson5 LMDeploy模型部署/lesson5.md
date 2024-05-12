@@ -1,20 +1,20 @@
 ## 1. 模型部署基础
 **模型部署概念**
-![模型部署定义](.\img\模型部署定义.png)
+![模型部署定义](./img/模型部署定义.png)
 ### 1.1 模型部署的挑战
 1. 计算量巨大
-![计算量大](.\img\计算量大.png)
+![计算量大](./img/计算量大.png)
 2. 内存开销巨大
-![内存开销大](.\img\内存开销大.png)
+![内存开销大](./img/内存开销大.png)
 3. 访存瓶颈
 4. 动态请求
-![访存瓶颈](.\img\访存瓶颈.png)
+![访存瓶颈](./img/访存瓶颈.png)
 
 ### 1.2 模型部署方法
 1. 模型剪枝
-![模型剪枝](.\img\模型剪枝.png)
+![模型剪枝](./img/模型剪枝.png)
 2. 知识蒸馏
-![知识蒸馏](.\img\知识蒸馏.png)
+![知识蒸馏](./img/知识蒸馏.png)
 3. 量化
 量化是一种以参数或计算中间结果精度下降换空间节省（以及同时带来的性能提升）的策略。
 **计算密集（compute-bound）**: 指推理过程中，绝大部分时间消耗在数值计算上；针对计算密集型场景，可以通过使用更快的硬件计算单元来提升计算速度。
@@ -23,13 +23,13 @@ LLM是典型的访存密集型任务。可使用KV8量化和W4A16量化。
 **KV8量化**：是指将逐 Token（Decoding）生成过程中的上下文 K 和 V 中间结果进行 INT8 量化（计算时再反量化），以降低生成过程中的显存占用。
 **W4A16 量化**：将 FP16 的模型权重量化为 INT4，Kernel 计算时，访存量直接降为 FP16 模型的 1/4，大幅降低了访存成本。Weight Only 是指仅量化权重，数值计算依然采用 FP16（需要将 INT4 权重反量化）。
 
-![量化](.\img\量化.png)
+![量化](./img/量化.png)
 
 ## 2. LMDeploy简介
 **LMDeploy简介**
-![LMDeploy简介](.\img\LMDeploy简介.png)
+![LMDeploy简介](./img/LMDeploy简介.png)
 **LMDeploy核心功能**
-![LMDeploy核心功能](.\img\LMDeploy核心功能.png)
+![LMDeploy核心功能](./img/LMDeploy核心功能.png)
 
 ## 3. LMDeploy实操
 1. 创建开发机
@@ -72,7 +72,7 @@ print("[OUTPUT]", response)
 print(time.time() - ts)
 ```
 
-![Transformer库运行模型](.\img\Transformer库运行模型.png)
+![Transformer库运行模型](./img/Transformer库运行模型.png)
 6. 使用LMDeploy
 ```
 使用其对话
@@ -89,9 +89,9 @@ KV Cache是一种缓存技术，通过存储键值对的形式来复用计算结
 lmdeploy chat /root/internlm2-chat-1_8b --cache-max-entry-count 0.5
 ```
 KV Cache默认为0.8
-![正常情况显存占用](.\img\正常情况显存占用.png)
+![正常情况显存占用](./img/正常情况显存占用.png)
 KV Cache设置为0.5
-![KVCashe为0.5显存占用](.\img\KVCashe为0.5显存占用.png)
+![KVCashe为0.5显存占用](./img/KVCashe为0.5显存占用.png)
 8. W4A16量化
 LMDeploy使用AWQ算法，实现模型4bit权重量化。推理引擎TurboMind提供了非常高效的4bit推理cuda kernel，性能是FP16的2.4倍以上。它支持以下NVIDIA显卡：
 * 图灵架构（sm75）：20系列、T4
@@ -117,7 +117,7 @@ lmdeploy chat /root/internlm2-chat-1_8b-4bit --model-format awq --cache-max-entr
 lmdeploy lite -h
 ```
 9. LMDeploy服务(serve)
-![架构图](.\img\架构图.png)
+![架构图](./img/架构图.png)
 从架构上把整个服务流程分成下面几个模块。
 模型推理/服务。主要提供模型本身的推理，一般来说可以和具体业务解耦，专注模型推理本身性能的优化。可以以模块、API等多种方式提供。
 API Server。中间协议层，把后端推理/服务通过HTTP，gRPC或其他形式的接口，供前端调用。
@@ -146,16 +146,16 @@ lmdeploy serve api_server -h
 ssh -CNg -L 23333:127.0.0.1:23333 root@ssh.intern-ai.org.cn -p 你的ssh端口号
 ```
 ssh 端口号就是下面图片里的 39864，请替换为你自己的。
-![端口号](.\img\端口号.png)
+![端口号](./img/端口号.png)
 **打开浏览器，访问http://127.0.0.1:23333。**
-![访问FastAPI](.\img\访问FastAPI.png)
+![访问FastAPI](./img/访问FastAPI.png)
 10. 使用命令行连接API服务器
 ```
 lmdeploy serve api_client http://localhost:23333
 ```
-![使用命令行访问](.\img\使用命令行访问.png)
+![使用命令行访问](./img/使用命令行访问.png)
 此时架构图为：
-![命令行架构图](.\img\命令行架构图.png)
+![命令行架构图](./img/命令行架构图.png)
 
 11. 网页客户端连接API服务器
 关闭刚刚的VSCode终端，但服务器端的终端不要关闭。
@@ -169,15 +169,15 @@ lmdeploy serve gradio http://localhost:23333 \
     --server-name 0.0.0.0 \
     --server-port 6006
 ```
-![网页客户端](.\img\网页客户端.png)
+![网页客户端](./img/网页客户端.png)
 运行命令后，网页客户端启动。在电脑本地新建一个cmd终端，新开一个转发端口：
 ```
 ssh -CNg -L 6006:127.0.0.1:6006 root@ssh.intern-ai.org.cn -p <你的ssh端口号>
 ```
 打开浏览器，访问地址http://127.0.0.1:6006,然后就可以与模型进行对话了！
-![网页客户端运行](.\img\网页客户端运行.png)
+![网页客户端运行](./img/网页客户端运行.png)
 此时架构图为：
-![网页架构图](.\img\网页架构图.png)
+![网页架构图](./img/网页架构图.png)
 12. Python代码集成
 
 创建pipeline.py
@@ -226,7 +226,7 @@ response = pipe(('describe this image', image))
 print(response)
 ```
 运行视觉模型
-![运行视觉模型](.\img\运行视觉模型.png)
+![运行视觉模型](./img/运行视觉模型.png)
 
 通过Gradio来运行llava模型。新建python文件gradio_llava.py
 ```python
@@ -248,10 +248,10 @@ def model(image, text):
 demo = gr.Interface(fn=model, inputs=[gr.Image(type="pil"), gr.Textbox()], outputs=gr.Chatbot())
 demo.launch()   
 ```
-![gradio运行视觉模型](.\img\gradio运行视觉模型.png)
+![gradio运行视觉模型](./img/gradio运行视觉模型.png)
 转发端口
 ```
 ssh -CNg -L 7860:127.0.0.1:7860 root@ssh.intern-ai.org.cn -p <你的ssh端口>
 ```
 访问http://127.0.0.1:7860
-![gradio运行视觉模型结果](.\img\gradio运行视觉模型结果.png)
+![gradio运行视觉模型结果](./img/gradio运行视觉模型结果.png)
